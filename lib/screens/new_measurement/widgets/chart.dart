@@ -1,3 +1,5 @@
+import 'package:ergo_flow/providers/ble_state.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -26,28 +28,43 @@ class _ChartState extends State<Chart> {
 
   @override
   Widget build(BuildContext context) {
-    return SfCartesianChart(
-      zoomPanBehavior: _zoomPanBehavior,
-      primaryXAxis: const NumericAxis(
-        maximum: 20,
-        minimum: 0,
-      ),
-      primaryYAxis: const NumericAxis(
-        maximum: 0.4,
-        minimum: 0,
-      ),
-      series: <CartesianSeries>[
-        SplineSeries<Data, double>(
-          onRendererCreated: (ChartSeriesController controller) {
-            //_chartSeriesController = controller;
-          },
-          dataSource: _chartData,
-          xValueMapper: (Data voltage, _) => voltage.time,
-          yValueMapper: (Data voltage, _) => voltage.voltage,
-          //markerSettings: const MarkerSettings(isVisible: true),
+    final bleState = Provider.of<BleState>(context);
+    if (bleState.notifyState) {
+      return SfCartesianChart(
+        zoomPanBehavior: _zoomPanBehavior,
+        primaryXAxis: const NumericAxis(
+          maximum: 20,
+          minimum: 0,
         ),
-      ],
-    );
+        primaryYAxis: const NumericAxis(
+          maximum: 0.4,
+          minimum: 0,
+        ),
+        series: <CartesianSeries>[
+          SplineSeries<Data, double>(
+            onRendererCreated: (ChartSeriesController controller) {
+              //_chartSeriesController = controller;
+            },
+            dataSource: _chartData,
+            xValueMapper: (Data voltage, _) => voltage.time,
+            yValueMapper: (Data voltage, _) => voltage.voltage,
+            //markerSettings: const MarkerSettings(isVisible: true),
+          ),
+        ],
+      );
+    } else {
+      return SfCartesianChart(
+        zoomPanBehavior: _zoomPanBehavior,
+        primaryXAxis: const NumericAxis(
+          maximum: 20,
+          minimum: 0,
+        ),
+        primaryYAxis: const NumericAxis(
+          maximum: 0.4,
+          minimum: 0,
+        ),
+      );
+    }
   }
 
   double time = 0;

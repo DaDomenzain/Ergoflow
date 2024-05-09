@@ -6,7 +6,7 @@ class UserInfo with ChangeNotifier {
   late int _age;
   late String _sex;
   String _name = 'Usuario';
-  Image _avatar = Image.asset('assets/images/avatar_h_1.jpg');
+  Image _avatar = Image.asset('assets/images/avatar_h_2.jpg');
 
   double get height {
     return _height;

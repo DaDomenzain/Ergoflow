@@ -14,44 +14,48 @@ class ReceiveData extends StatefulWidget {
 }
 
 class _ReceiveDataState extends State<ReceiveData> {
-  ElevatedButton startReceivingData(
-      BuildContext context, BluetoothCharacteristic characteristic) {
+  ElevatedButton startReceivingData(BuildContext context,
+      {BluetoothCharacteristic? characteristic}) {
     final bleState = Provider.of<BleState>(context);
     ElevatedButton button =
         const ElevatedButton(onPressed: null, child: Text('Comenzar medición'));
-    if (characteristic.properties.notify) {
-      button = ElevatedButton(
-        child: const Text('Comenzar medición',
-            style: TextStyle(color: Colors.black)),
-        onPressed: () async {
-          characteristic.lastValueStream.listen((value) {
-            setState(() {
-              widget.readValues[characteristic.uuid] = value;
+    if (characteristic != null) {
+      if (characteristic.properties.notify) {
+        button = ElevatedButton(
+          child: const Text('Comenzar medición',
+              style: TextStyle(color: Colors.black)),
+          onPressed: () async {
+            characteristic.lastValueStream.listen((value) {
+              setState(() {
+                widget.readValues[characteristic.uuid] = value;
+              });
             });
-          });
-          await characteristic.setNotifyValue(true);
-          bleState.notifyState = true;
-        },
-      );
+            await characteristic.setNotifyValue(true);
+            bleState.notifyState = true;
+          },
+        );
+      }
     }
 
     return button;
   }
 
-  ElevatedButton stopReceivingData(
-      BuildContext context, BluetoothCharacteristic characteristic) {
+  ElevatedButton stopReceivingData(BuildContext context,
+      {BluetoothCharacteristic? characteristic}) {
     final bleState = Provider.of<BleState>(context);
     ElevatedButton button =
         const ElevatedButton(onPressed: null, child: Text('Detener medición'));
-    if (bleState.notifyState) {
-      button = ElevatedButton(
-        child: const Text('Detener medición',
-            style: TextStyle(color: Colors.black)),
-        onPressed: () async {
-          await characteristic.setNotifyValue(false);
-          bleState.notifyState = false;
-        },
-      );
+    if (characteristic != null) {
+      if (bleState.notifyState) {
+        button = ElevatedButton(
+          child: const Text('Detener medición',
+              style: TextStyle(color: Colors.black)),
+          onPressed: () async {
+            await characteristic.setNotifyValue(false);
+            bleState.notifyState = false;
+          },
+        );
+      }
     }
     return button;
   }
@@ -60,36 +64,52 @@ class _ReceiveDataState extends State<ReceiveData> {
     final bleState = Provider.of<BleState>(context);
     final utf8Decoder = utf8.decoder;
     var connectedButtons = const Column();
-    int cont = 0;
-    for (BluetoothService service in bleState.services) {
-      if (cont == 2) {
-        for (BluetoothCharacteristic characteristic
-            in service.characteristics) {
-          if (characteristic.properties.notify) {
-            String decodedBytes = '';
-            List<int>? encodedBytes = widget.readValues[characteristic.uuid];
-            // ignore: unnecessary_null_comparison
-            if (encodedBytes?.where((e) => e != null).toList().isEmpty ??
-                true) {
-              decodedBytes = '';
-            } else {
-              decodedBytes = utf8Decoder.convert(encodedBytes!);
+    if (bleState.connectionState) {
+      int cont = 0;
+      for (BluetoothService service in bleState.services) {
+        if (cont == 2) {
+          for (BluetoothCharacteristic characteristic
+              in service.characteristics) {
+            if (characteristic.properties.notify) {
+              String decodedBytes = '';
+              List<int>? encodedBytes = widget.readValues[characteristic.uuid];
+              // ignore: unnecessary_null_comparison
+              if (encodedBytes?.where((e) => e != null).toList().isEmpty ??
+                  true) {
+                decodedBytes = '';
+              } else {
+                decodedBytes = utf8Decoder.convert(encodedBytes!);
+              }
+              connectedButtons = Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      startReceivingData(context),
+                      stopReceivingData(context)
+                    ],
+                  ),
+                  Text('Value: $decodedBytes'),
+                ],
+              );
             }
-            connectedButtons = Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    startReceivingData(context, characteristic),
-                    stopReceivingData(context, characteristic)
-                  ],
-                ),
-                Text('Value: $decodedBytes'),
-              ],
-            );
           }
         }
+        cont += 1;
       }
-      cont += 1;
+    } else {
+      connectedButtons = Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            startReceivingData(context),
+            stopReceivingData(context)
+          ],
+        ),
+        const Text(
+          'No hay dispositivos conectados',
+          style: TextStyle(color: Colors.redAccent),
+        )
+      ]);
     }
 
     return connectedButtons;
