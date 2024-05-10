@@ -38,7 +38,7 @@ class Bienvenida extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               Text(
-                'Da click en el boton de comenzar para empezar tu \nmedición.',
+                'Da click en el boton de comenzar para empezar tu medición.',
                 style: TextStyle(fontSize: 12),
               )
             ]),

@@ -6,4 +6,5 @@ class ColorPalette {
   static Color gris = const Color.fromARGB(255, 90, 92, 96);
   static Color blanco = const Color.fromARGB(255, 255, 255, 255);
   static Color negro = const Color.fromARGB(255, 0, 0, 0);
+  static Color gris2 = const Color.fromARGB(255, 246, 246, 246);
 }

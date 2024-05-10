@@ -16,7 +16,8 @@ class _ChartState extends State<Chart> {
   late List<Data> _chartData;
   //late ChartSeriesController _chartSeriesController;
   late ZoomPanBehavior _zoomPanBehavior;
-
+  late Timer timer;
+  double time = 0;
   @override
   void initState() {
     _zoomPanBehavior = ZoomPanBehavior(
@@ -37,7 +38,7 @@ class _ChartState extends State<Chart> {
           minimum: 0,
         ),
         primaryYAxis: const NumericAxis(
-          maximum: 0.4,
+          maximum: 4,
           minimum: 0,
         ),
         series: <CartesianSeries>[
@@ -53,6 +54,12 @@ class _ChartState extends State<Chart> {
         ],
       );
     } else {
+      _chartData = [];
+      if (mounted) {
+        setState(() {
+          time = 0;
+        });
+      }
       return SfCartesianChart(
         zoomPanBehavior: _zoomPanBehavior,
         primaryXAxis: const NumericAxis(
@@ -60,14 +67,13 @@ class _ChartState extends State<Chart> {
           minimum: 0,
         ),
         primaryYAxis: const NumericAxis(
-          maximum: 0.4,
+          maximum: 4,
           minimum: 0,
         ),
       );
     }
   }
 
-  double time = 0;
   void updateDataSource(Timer timer) {
     _chartData.add(Data(time = time + 0.1, double.parse(widget.datatest)));
     //_chartData.removeAt(0);

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:ergo_flow/config/color_palette.dart';
 import 'package:ergo_flow/providers/ble_state.dart';
+import 'package:ergo_flow/screens/new_measurement/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:provider/provider.dart';
@@ -21,19 +23,24 @@ class _ReceiveDataState extends State<ReceiveData> {
         const ElevatedButton(onPressed: null, child: Text('Comenzar medición'));
     if (characteristic != null) {
       if (characteristic.properties.notify) {
-        button = ElevatedButton(
-          child: const Text('Comenzar medición',
-              style: TextStyle(color: Colors.black)),
-          onPressed: () async {
-            characteristic.lastValueStream.listen((value) {
-              setState(() {
-                widget.readValues[characteristic.uuid] = value;
+        if (!bleState.notifyState) {
+          button = ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: ColorPalette.azul),
+            child: Text('Comenzar medición',
+                style: TextStyle(color: ColorPalette.blanco)),
+            onPressed: () async {
+              characteristic.lastValueStream.listen((value) {
+                if (mounted) {
+                  setState(() {
+                    widget.readValues[characteristic.uuid] = value;
+                  });
+                }
               });
-            });
-            await characteristic.setNotifyValue(true);
-            bleState.notifyState = true;
-          },
-        );
+              await characteristic.setNotifyValue(true);
+              bleState.notifyState = true;
+            },
+          );
+        }
       }
     }
 
@@ -48,8 +55,9 @@ class _ReceiveDataState extends State<ReceiveData> {
     if (characteristic != null) {
       if (bleState.notifyState) {
         button = ElevatedButton(
-          child: const Text('Detener medición',
-              style: TextStyle(color: Colors.black)),
+          style: ElevatedButton.styleFrom(backgroundColor: ColorPalette.azul),
+          child: Text('Detener medición',
+              style: TextStyle(color: ColorPalette.blanco)),
           onPressed: () async {
             await characteristic.setNotifyValue(false);
             bleState.notifyState = false;
@@ -77,39 +85,82 @@ class _ReceiveDataState extends State<ReceiveData> {
               if (encodedBytes?.where((e) => e != null).toList().isEmpty ??
                   true) {
                 decodedBytes = '';
+                connectedButtons = Column(
+                  children: [
+                    Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              startReceivingData(context,
+                                  characteristic: characteristic),
+                              stopReceivingData(context,
+                                  characteristic: characteristic)
+                            ],
+                          ),
+                        ),
+                        Text('Value: $decodedBytes'),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 15),
+                      child: Chart(datatest: '0.0'),
+                    )
+                  ],
+                );
               } else {
                 decodedBytes = utf8Decoder.convert(encodedBytes!);
+                connectedButtons = Column(
+                  children: [
+                    Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              startReceivingData(context,
+                                  characteristic: characteristic),
+                              stopReceivingData(context,
+                                  characteristic: characteristic)
+                            ],
+                          ),
+                        ),
+                        Text('Value: $decodedBytes'),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 15),
+                      child: Chart(
+                        datatest: decodedBytes,
+                      ),
+                    )
+                  ],
+                );
               }
-              connectedButtons = Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      startReceivingData(context),
-                      stopReceivingData(context)
-                    ],
-                  ),
-                  Text('Value: $decodedBytes'),
-                ],
-              );
             }
           }
         }
         cont += 1;
       }
     } else {
-      connectedButtons = Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            startReceivingData(context),
-            stopReceivingData(context)
-          ],
-        ),
-        const Text(
-          'No hay dispositivos conectados',
-          style: TextStyle(color: Colors.redAccent),
-        )
-      ]);
+      connectedButtons = Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              startReceivingData(context),
+              stopReceivingData(context)
+            ],
+          ),
+          const Text(
+            'No hay dispositivos conectados',
+            style: TextStyle(color: Colors.redAccent),
+          ),
+        ],
+      );
     }
 
     return connectedButtons;

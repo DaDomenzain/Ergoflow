@@ -8,15 +8,16 @@ import 'package:ergo_flow/screens/new_measurement/new_measurement.dart';
 
 class ButtonList extends StatelessWidget {
   const ButtonList({super.key});
-
+  final double buttonheight = 40;
+  final double buttonwidth = 175;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         SizedBox(
-          height: 40,
-          width: 175,
+          height: buttonheight,
+          width: buttonwidth,
           child: ElevatedButton.icon(
             icon: Icon(
               Icons.person_outline_rounded,
@@ -36,8 +37,8 @@ class ButtonList extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 40,
-          width: 175,
+          height: buttonheight,
+          width: buttonwidth,
           child: ElevatedButton.icon(
             icon: Icon(
               Icons.auto_graph_rounded,
@@ -58,8 +59,8 @@ class ButtonList extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 40,
-          width: 175,
+          height: buttonheight,
+          width: buttonwidth,
           child: ElevatedButton.icon(
             icon: Icon(
               Icons.history,
@@ -79,8 +80,8 @@ class ButtonList extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 40,
-          width: 175,
+          height: buttonheight,
+          width: buttonwidth,
           child: ElevatedButton.icon(
             icon: Icon(
               Icons.bluetooth_sharp,

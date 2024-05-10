@@ -25,9 +25,11 @@ class BleManagerState extends State<BleManager> {
   //Add Bluetooth Device to list of possible devices
   _addDeviceTolist(final BluetoothDevice device) {
     if (!widget.devicesList.contains(device)) {
-      setState(() {
-        widget.devicesList.add(device);
-      });
+      if (mounted) {
+        setState(() {
+          widget.devicesList.add(device);
+        });
+      }
     }
   }
 
@@ -124,7 +126,14 @@ class BleManagerState extends State<BleManager> {
   ElevatedButton disconnectDevice(BuildContext context) {
     final bleState = Provider.of<BleState>(context);
     return ElevatedButton(
-      child: const Text('Desconectar dispositivo'),
+      style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll<Color>(ColorPalette.azul),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ))),
+      child: Text('Desconectar dispositivo',
+          style: TextStyle(color: ColorPalette.blanco)),
       onPressed: () {
         if (bleState.connectedDevice != null) {
           bleState.connectedDevice!.disconnect();
