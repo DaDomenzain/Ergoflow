@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "143549067938",
+    "project_id": "ergomax-flow",
+    "storage_bucket": "ergomax-flow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143549067938:android:69776507710ca4f64c9dfb",
+        "android_client_info": {
+          "package_name": "com.example.ergo_flow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDA4X6ov3dMsajFehYFwcgvb_VK-jb-LI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

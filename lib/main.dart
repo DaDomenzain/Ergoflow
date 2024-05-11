@@ -1,4 +1,4 @@
-import 'package:ergo_flow/screens/home/home.dart';
+import 'package:ergo_flow/screens/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,9 +14,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => BleState()),
-      ChangeNotifierProvider(create: (context) => UserInfo()),
-    ], child: const MaterialApp(home: Home()));
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => BleState()),
+          ChangeNotifierProvider(create: (context) => UserInfo()),
+        ],
+        child: const MaterialApp(
+            debugShowCheckedModeBanner: false, home: Login()));
   }
 }
