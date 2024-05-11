@@ -1,12 +1,39 @@
 import 'package:ergo_flow/config/color_palette.dart';
+import 'package:ergo_flow/logic/helper_functions.dart';
 import 'package:ergo_flow/screens/global_widgets/my_textfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Inputs extends StatelessWidget {
+class Inputs extends StatefulWidget {
+  const Inputs({super.key});
+
+  @override
+  State<Inputs> createState() => _InputsState();
+}
+
+class _InputsState extends State<Inputs> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Inputs({super.key});
+  void login() async {
+    //Mostrar círculo de carga
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    //Intentar iniciar sesión
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      displayMessagetoUser(e.code, context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +90,9 @@ class Inputs extends StatelessWidget {
             'Acceder',
             style: TextStyle(color: ColorPalette.blanco, fontSize: 17),
           ),
-          onPressed: () {},
+          onPressed: () {
+            login();
+          },
         )
       ],
     );

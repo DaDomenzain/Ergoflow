@@ -9,21 +9,21 @@ class CreateAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return const SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30),
+          padding: EdgeInsets.only(left: 30, right: 30),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                const Logo(),
+                Logo(),
                 Inputs(),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
-                const Row(children: <Widget>[
+                Row(children: <Widget>[
                   Expanded(child: Divider()),
                   SizedBox(
                     width: 20,
@@ -34,7 +34,7 @@ class CreateAccount extends StatelessWidget {
                   ),
                   Expanded(child: Divider()),
                 ]),
-                const SizedBox(
+                SizedBox(
                   height: 10,
                 ),
                 ContinueExt(),
