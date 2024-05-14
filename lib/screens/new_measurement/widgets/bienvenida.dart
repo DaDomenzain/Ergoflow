@@ -9,7 +9,7 @@ class Bienvenida extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserInfo>(context);
+    final user = Provider.of<MyUserInfo>(context);
     return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       Expanded(
         flex: 10,
@@ -20,7 +20,8 @@ class Bienvenida extends StatelessWidget {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        fit: BoxFit.fill, image: user.avatar.image)))),
+                        fit: BoxFit.fill,
+                        image: Image.asset(user.avatar).image)))),
       ),
       const Expanded(
           flex: 1,

@@ -1,13 +1,9 @@
 import 'package:ergo_flow/config/color_palette.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ergo_flow/logic/auth.dart';
 import 'package:flutter/material.dart';
 
 class Logout extends StatelessWidget {
   const Logout({super.key});
-
-  void logout() {
-    FirebaseAuth.instance.signOut();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +28,7 @@ class Logout extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12.0),
               ))),
           onPressed: () {
-            logout();
+            AuthenticationRepository.instance.logout();
           },
         ),
       ),

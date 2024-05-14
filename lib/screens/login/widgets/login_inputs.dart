@@ -1,22 +1,22 @@
 import 'package:ergo_flow/config/color_palette.dart';
+import 'package:ergo_flow/logic/auth.dart';
 import 'package:ergo_flow/logic/helper_functions.dart';
 import 'package:ergo_flow/screens/global_widgets/my_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Inputs extends StatefulWidget {
-  const Inputs({super.key});
+class LoginInputs extends StatefulWidget {
+  const LoginInputs({super.key});
 
   @override
-  State<Inputs> createState() => _InputsState();
+  State<LoginInputs> createState() => _LoginInputsState();
 }
 
-class _InputsState extends State<Inputs> {
+class _LoginInputsState extends State<LoginInputs> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPwController = TextEditingController();
 
-  void registerUser() async {
+  void login() async {
     //Mostrar círculo de carga
     showDialog(
       context: context,
@@ -24,26 +24,18 @@ class _InputsState extends State<Inputs> {
         child: CircularProgressIndicator(),
       ),
     );
-    //Confirmar que las contraseñas
-    if (passwordController.text != confirmPwController.text) {
-      Navigator.pop(context);
 
-      displayMessagetoUser('Contraseñas no conciden', context);
-    } else {
-      try {
-        //Crear usuario
-        // ignore: unused_local_variable
-        UserCredential? userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text);
-        Navigator.pop(context);
-      } on FirebaseAuthException catch (e) {
+    //Intentar iniciar sesión
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      if (mounted) Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
         Navigator.pop(context);
         displayMessagetoUser(e.code, context);
       }
     }
-
-    //Intentar crear usuario
   }
 
   @override
@@ -52,14 +44,14 @@ class _InputsState extends State<Inputs> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Text(
-          'Crea tu cuenta',
+          '¡Bienvenido!',
           style: TextStyle(
               fontSize: 30,
               color: ColorPalette.azul,
               fontWeight: FontWeight.bold),
         ),
         Text(
-          'Completa la siguiente información',
+          'Inicia sesión para empezar tus mediciones',
           style: TextStyle(fontSize: 15, color: ColorPalette.negro),
         ),
         const SizedBox(
@@ -78,16 +70,16 @@ class _InputsState extends State<Inputs> {
           hintText: 'Contraseña',
           ispassword: true,
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        MyTextField(
-          controller: confirmPwController,
-          hintText: 'Confirme contraseña',
-          ispassword: true,
-        ),
-        const SizedBox(
-          height: 20,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(padding: const EdgeInsets.all(0)),
+              child: Text('¿Olvidaste tu contraseña?',
+                  style: TextStyle(color: ColorPalette.gris3, fontSize: 13)),
+              onPressed: () {},
+            ),
+          ],
         ),
         ElevatedButton(
           style: ButtonStyle(
@@ -98,11 +90,12 @@ class _InputsState extends State<Inputs> {
                 borderRadius: BorderRadius.circular(12.0),
               ))),
           child: Text(
-            'Crea cuenta',
+            'Acceder',
             style: TextStyle(color: ColorPalette.blanco, fontSize: 17),
           ),
           onPressed: () {
-            registerUser();
+            AuthenticationRepository.instance.loginWithEmailandPassword(
+                emailController.text, passwordController.text);
           },
         )
       ],

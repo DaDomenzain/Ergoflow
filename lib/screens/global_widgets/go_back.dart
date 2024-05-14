@@ -15,6 +15,7 @@ class GoBack extends StatelessWidget {
           ),
           label: Text('Página principal',
               style: TextStyle(color: ColorPalette.negro)),
+          style: TextButton.styleFrom(padding: const EdgeInsets.all(0)),
           onPressed: () {
             Navigator.pop(context);
           }),

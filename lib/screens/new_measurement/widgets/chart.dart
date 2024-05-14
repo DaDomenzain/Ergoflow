@@ -7,7 +7,7 @@ import 'dart:async';
 // ignore: must_be_immutable
 class Chart extends StatefulWidget {
   String datatest;
-  Chart({Key? key, required this.datatest}) : super(key: key);
+  Chart({super.key, required this.datatest});
   @override
   State<Chart> createState() => _ChartState();
 }

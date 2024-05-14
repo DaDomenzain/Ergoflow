@@ -7,7 +7,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserInfo>(context);
-    return Center(child: user.avatar);
+    final user = Provider.of<MyUserInfo>(context);
+    return Center(child: Image.asset(user.avatar));
   }
 }

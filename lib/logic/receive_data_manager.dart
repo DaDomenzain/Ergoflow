@@ -112,6 +112,8 @@ class _ReceiveDataState extends State<ReceiveData> {
                 );
               } else {
                 decodedBytes = utf8Decoder.convert(encodedBytes!);
+                String newdecoded = decodedBytes.split(',')[5];
+                //String newdecoded = decodedBytes;
                 connectedButtons = Column(
                   children: [
                     Column(
@@ -128,13 +130,13 @@ class _ReceiveDataState extends State<ReceiveData> {
                             ],
                           ),
                         ),
-                        Text('Value: $decodedBytes'),
+                        Text('Value: $newdecoded'),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 15),
                       child: Chart(
-                        datatest: decodedBytes,
+                        datatest: newdecoded,
                       ),
                     )
                   ],

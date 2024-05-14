@@ -7,14 +7,15 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserInfo>(context);
+    final user = Provider.of<MyUserInfo>(context);
     return Center(
       child: Container(
         width: 175,
         height: 175,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            image: DecorationImage(fit: BoxFit.fill, image: user.avatar.image)),
+            image: DecorationImage(
+                fit: BoxFit.fill, image: Image.asset(user.avatar).image)),
         //child: Image.asset('assets/images/avatar1.jpg'),
       ),
     );

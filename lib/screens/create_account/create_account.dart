@@ -1,6 +1,6 @@
 import 'package:ergo_flow/screens/global_widgets/logo.dart';
 import 'package:ergo_flow/screens/create_account/widgets/continue_ext.dart';
-import 'package:ergo_flow/screens/create_account/widgets/inputs.dart';
+import 'package:ergo_flow/screens/create_account/widgets/create_inputs.dart';
 import 'package:ergo_flow/screens/create_account/widgets/access.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class CreateAccount extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Logo(),
-                Inputs(),
+                CreateInputs(),
                 SizedBox(
                   height: 10,
                 ),

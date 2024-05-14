@@ -16,14 +16,14 @@ class NewMeasurement extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       child:
           Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Logo(),
-        GoBack(),
-        Bienvenida(),
-        SizedBox(
+        const Logo(),
+        const GoBack(),
+        const Bienvenida(),
+        const SizedBox(
           height: 30,
         ),
         ReceiveData(),
-        Comparar()
+        const Comparar()
       ]),
     )));
   }

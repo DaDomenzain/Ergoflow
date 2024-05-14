@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 
-class UserInfo with ChangeNotifier {
-  late double _height;
-  late double _weight;
+class MyUserInfo with ChangeNotifier {
+  late int _height;
+  late int _weight;
   late int _age;
   late String _sex;
   String _name = 'Usuario';
-  Image _avatar = Image.asset('assets/images/avatar_h_2.jpg');
+  String _avatar = 'assets/images/avatar_h_2.jpg';
+  late String? _email;
 
-  double get height {
+  int get height {
     return _height;
   }
 
-  double get weight {
+  int get weight {
     return _weight;
   }
 
-  set weight(double value) {
+  set weight(int value) {
     _weight = value;
     notifyListeners();
   }
 
-  set height(double value) {
+  set height(int value) {
     _height = value;
     notifyListeners();
   }
@@ -35,11 +36,11 @@ class UserInfo with ChangeNotifier {
     notifyListeners();
   }
 
-  Image get avatar {
+  String get avatar {
     return _avatar;
   }
 
-  set avatar(Image value) {
+  set avatar(String value) {
     _avatar = value;
     notifyListeners();
   }
@@ -60,5 +61,13 @@ class UserInfo with ChangeNotifier {
   set sex(String value) {
     _sex = value;
     notifyListeners();
+  }
+
+  String? get email {
+    return _email;
+  }
+
+  set email(String? value) {
+    _email = value;
   }
 }
