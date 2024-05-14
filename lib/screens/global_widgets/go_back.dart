@@ -13,8 +13,7 @@ class GoBack extends StatelessWidget {
             Icons.arrow_back_rounded,
             color: ColorPalette.naranja,
           ),
-          label: Text('Página principal',
-              style: TextStyle(color: ColorPalette.negro)),
+          label: Text('Atrás', style: TextStyle(color: ColorPalette.negro)),
           style: TextButton.styleFrom(padding: const EdgeInsets.all(0)),
           onPressed: () {
             Navigator.pop(context);

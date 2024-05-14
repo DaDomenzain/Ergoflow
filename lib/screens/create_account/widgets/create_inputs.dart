@@ -104,16 +104,17 @@ class _CreateInputsState extends State<CreateInputs> {
             'Crea cuenta',
             style: TextStyle(color: ColorPalette.blanco, fontSize: 17),
           ),
-          onPressed: () {
+          onPressed: () async {
             final user = FBUser(
+                id: '1234',
                 email: emailController.text,
                 name: 'Usuario',
                 age: 1,
-                sex: 'M',
+                sex: 'Masculino',
                 height: 1,
                 weight: 1,
                 avatar: 'assets/images/avatar_h_1.jpg');
-            UserRepository().createUser(user);
+            await UserRepository().createUser(user);
             AuthenticationRepository.instance.createUserWithEmailandPassword(
                 emailController.text, passwordController.text);
           },

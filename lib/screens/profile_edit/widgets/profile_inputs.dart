@@ -3,7 +3,7 @@ import 'package:ergo_flow/logic/profile_controller.dart';
 import 'package:ergo_flow/logic/user.dart';
 import 'package:ergo_flow/providers/user_info.dart';
 import 'package:ergo_flow/screens/global_widgets/my_textfield.dart';
-import 'package:ergo_flow/screens/home/home.dart';
+import 'package:ergo_flow/screens/profile_edit/avatar_select.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -24,130 +24,10 @@ class _ProfileInputsState extends State<ProfileInputs> {
   final TextEditingController weightController = TextEditingController();
   final TextEditingController heightController = TextEditingController();
 
-  String? selectedSex = '';
   String selectedAvatar = '';
   Color border1 = ColorPalette.blanco;
   Color border2 = ColorPalette.blanco;
   Color border3 = ColorPalette.blanco;
-
-  void editProfile() {}
-
-  Row buildAvatarSelector(String sex) {
-    Row avatarRow;
-
-    if (sex == 'Masculino') {
-      avatarRow = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border1, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  border1 = ColorPalette.azul;
-                  border2 = ColorPalette.blanco;
-                  border3 = ColorPalette.blanco;
-                  selectedAvatar = 'assets/images/avatar_h_1.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_h_1.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border2, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.azul;
-                  border3 = ColorPalette.blanco;
-                  selectedAvatar = 'assets/images/avatar_h_2.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_h_2.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border3, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.blanco;
-                  border3 = ColorPalette.azul;
-                  selectedAvatar = 'assets/images/avatar_h_3.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_h_3.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      avatarRow = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border1, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  border1 = ColorPalette.azul;
-                  border2 = ColorPalette.blanco;
-                  selectedAvatar = 'assets/images/avatar_m_1.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_m_1.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border2, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.azul;
-                  selectedAvatar = 'assets/images/avatar_m_2.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_m_2.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-    return avatarRow;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -220,11 +100,6 @@ class _ProfileInputsState extends State<ProfileInputs> {
                           textStyle: TextStyle(color: ColorPalette.azul),
                         ))
                   ],
-                  onSelected: (String? sex) {
-                    setState(() {
-                      selectedSex = sex;
-                    });
-                  },
                 ),
                 const SizedBox(
                   height: 10,
@@ -253,9 +128,6 @@ class _ProfileInputsState extends State<ProfileInputs> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text('Selecciona un avatar:',
-                    style: TextStyle(fontSize: 15)),
-                buildAvatarSelector(sexController.text),
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
@@ -265,11 +137,10 @@ class _ProfileInputsState extends State<ProfileInputs> {
                         borderRadius: BorderRadius.circular(12.0),
                       ))),
                   child: Text(
-                    'Guardar cambios',
+                    'Siguiente',
                     style: TextStyle(color: ColorPalette.blanco, fontSize: 17),
                   ),
                   onPressed: () async {
-                    print(selectedAvatar);
                     final newUserData = FBUser(
                         id: userData.id,
                         email: userData.email,
@@ -278,15 +149,19 @@ class _ProfileInputsState extends State<ProfileInputs> {
                         sex: sexController.text,
                         height: int.parse(heightController.text),
                         weight: int.parse(weightController.text),
-                        avatar: selectedAvatar);
+                        avatar: userData.avatar);
                     userInfo.name = nameController.text;
-                    userInfo.avatar = selectedAvatar;
+                    userInfo.avatar = userData.avatar;
+                    userInfo.age = int.parse(ageController.text);
+                    userInfo.email = userData.email;
+                    userInfo.height = int.parse(heightController.text);
+                    userInfo.weight = int.parse(weightController.text);
                     await controller.updateRecord(newUserData);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Home()),
+                      MaterialPageRoute(
+                          builder: (context) => const AvatarSelect()),
                     );
-                    ;
                   },
                 )
               ],

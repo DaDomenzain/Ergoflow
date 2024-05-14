@@ -6,7 +6,7 @@ class MyUserInfo with ChangeNotifier {
   late int _age;
   late String _sex;
   String _name = 'Usuario';
-  String _avatar = 'assets/images/avatar_h_2.jpg';
+  String _avatar = 'assets/images/avatar_h_1.jpg';
   late String? _email;
 
   int get height {

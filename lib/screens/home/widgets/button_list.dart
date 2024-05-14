@@ -8,7 +8,7 @@ import 'package:ergo_flow/screens/new_measurement/new_measurement.dart';
 
 class ButtonList extends StatelessWidget {
   const ButtonList({super.key});
-  final double buttonheight = 40;
+  final double buttonheight = 45;
   final double buttonwidth = 175;
   @override
   Widget build(BuildContext context) {
