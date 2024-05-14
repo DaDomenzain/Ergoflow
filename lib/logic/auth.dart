@@ -1,4 +1,3 @@
-import 'package:ergo_flow/screens/home/home.dart';
 import 'package:ergo_flow/screens/login/login.dart';
 import 'package:ergo_flow/screens/profile_edit/profile_edit.dart';
 import 'package:firebase_auth/firebase_auth.dart';

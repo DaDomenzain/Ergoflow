@@ -12,11 +12,10 @@ class ProfileController extends GetxController {
   final _userRepo = Get.put(UserRepository());
   getUserData() {
     final email = _authRepo.firebaseUser.value?.email;
-    print(email);
     if (email != null) {
       return _userRepo.getUserDetails(email);
     } else {
-      //Get.snackbar('Error', 'Login to continue');
+      Get.snackbar('Error', 'Login to continue');
     }
   }
 

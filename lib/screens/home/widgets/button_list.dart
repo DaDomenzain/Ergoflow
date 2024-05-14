@@ -18,16 +18,21 @@ class ButtonList extends StatelessWidget {
         SizedBox(
           height: buttonheight,
           width: buttonwidth,
-          child: ElevatedButton.icon(
-            icon: Icon(
-              Icons.person_outline_rounded,
-              color: ColorPalette.blanco,
-            ),
-            label: Text(
-              'Editar perfil',
-              style: TextStyle(color: ColorPalette.blanco),
-            ),
+          child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: ColorPalette.azul),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.person_outline_rounded,
+                  color: ColorPalette.blanco,
+                ),
+                Text(
+                  'Editar perfil',
+                  style: TextStyle(color: ColorPalette.blanco),
+                ),
+              ],
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -39,17 +44,25 @@ class ButtonList extends StatelessWidget {
         SizedBox(
           height: buttonheight,
           width: buttonwidth,
-          child: ElevatedButton.icon(
-            icon: Icon(
-              Icons.auto_graph_rounded,
-              color: ColorPalette.blanco,
-            ),
-            label: Text(
-              'Nueva medición',
-              style: TextStyle(color: ColorPalette.blanco),
-            ),
+          child: ElevatedButton(
             style:
                 ElevatedButton.styleFrom(backgroundColor: ColorPalette.naranja),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.auto_graph_rounded,
+                  color: ColorPalette.blanco,
+                ),
+                Text(
+                  'Nueva\nmedición',
+                  style: TextStyle(
+                    color: ColorPalette.blanco,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -61,16 +74,21 @@ class ButtonList extends StatelessWidget {
         SizedBox(
           height: buttonheight,
           width: buttonwidth,
-          child: ElevatedButton.icon(
-            icon: Icon(
-              Icons.history,
-              color: ColorPalette.blanco,
-            ),
-            label: Text(
-              'Historial',
-              style: TextStyle(color: ColorPalette.blanco),
-            ),
+          child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: ColorPalette.gris),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.history,
+                  color: ColorPalette.blanco,
+                ),
+                Text(
+                  'Historial',
+                  style: TextStyle(color: ColorPalette.blanco),
+                ),
+              ],
+            ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -82,16 +100,21 @@ class ButtonList extends StatelessWidget {
         SizedBox(
           height: buttonheight,
           width: buttonwidth,
-          child: ElevatedButton.icon(
-            icon: Icon(
-              Icons.bluetooth_sharp,
-              color: ColorPalette.blanco,
-            ),
-            label: Text(
-              'Conectar',
-              style: TextStyle(color: ColorPalette.blanco),
-            ),
+          child: ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: ColorPalette.azul),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(
+                  Icons.bluetooth_sharp,
+                  color: ColorPalette.blanco,
+                ),
+                Text(
+                  'Conectar',
+                  style: TextStyle(color: ColorPalette.blanco),
+                ),
+              ],
+            ),
             onPressed: () {
               Navigator.push(
                 context,
