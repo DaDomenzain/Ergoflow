@@ -14,6 +14,9 @@ class Chart extends StatefulWidget {
 
 class _ChartState extends State<Chart> {
   late List<Data> _chartData;
+  List<double> _pressChartData = [];
+  List<double> _timeEspiracion = [];
+  int timeCounter = 0;
   //late ChartSeriesController _chartSeriesController;
   late ZoomPanBehavior _zoomPanBehavior;
   late Timer timer;
@@ -76,12 +79,21 @@ class _ChartState extends State<Chart> {
 
   void updateDataSource(Timer timer) {
     _chartData.add(Data(time = time + 0.1, double.parse(widget.datatest)));
+    if (_chartData.last.voltage > 0.2) {
+      _pressChartData.add(_chartData.last.voltage);
+      if (timeCounter == 0) {
+        _timeEspiracion.add(_chartData.last.time);
+      }
+    }
+
+    //_pressChartData
     //_chartData.removeAt(0);
     //_chartSeriesController.updateDataSource(addedDataIndex: _chartData.length - 1);
   }
 
   List<Data> getChartData() {
     final List<Data> chartData = [];
+
     return chartData;
   }
 }
