@@ -1,3 +1,4 @@
+import 'package:ergo_flow/config/color_palette.dart';
 import 'package:ergo_flow/providers/user_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,10 @@ class Bienvenida extends StatelessWidget {
         flex: 10,
         child: Center(
             child: Container(
-                width: 40,
-                height: 40,
+                width: 50,
+                height: 50,
                 decoration: BoxDecoration(
+                    border: Border.all(color: ColorPalette.azul),
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         fit: BoxFit.fill,

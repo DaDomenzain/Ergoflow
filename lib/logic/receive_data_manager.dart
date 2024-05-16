@@ -106,13 +106,23 @@ class _ReceiveDataState extends State<ReceiveData> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 15),
-                      child: Chart(datatest: '0.0'),
+                      child: Chart(
+                        pressureV: '0.0',
+                        o2V: '0.0',
+                        co2V: '0.0',
+                        heartrateV: '0.0',
+                      ),
                     )
                   ],
                 );
               } else {
                 decodedBytes = utf8Decoder.convert(encodedBytes!);
-                String newdecoded = decodedBytes.split(',')[5];
+                List<String> receivedData = decodedBytes.split(',');
+                String pressureV = receivedData[0];
+                String o2V = receivedData[1];
+                String co2V = receivedData[2];
+                String heartRateV = receivedData[3];
+
                 //String newdecoded = decodedBytes;
                 connectedButtons = Column(
                   children: [
@@ -130,13 +140,16 @@ class _ReceiveDataState extends State<ReceiveData> {
                             ],
                           ),
                         ),
-                        Text('Value: $newdecoded'),
+                        Text('Value: $pressureV'),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 5, right: 15),
                       child: Chart(
-                        datatest: newdecoded,
+                        pressureV: pressureV,
+                        o2V: o2V,
+                        co2V: co2V,
+                        heartrateV: heartRateV,
                       ),
                     )
                   ],
@@ -150,17 +163,30 @@ class _ReceiveDataState extends State<ReceiveData> {
     } else {
       connectedButtons = Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              startReceivingData(context),
-              stopReceivingData(context)
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  startReceivingData(context),
+                  stopReceivingData(context)
+                ],
+              ),
+              const Text(
+                'No hay dispositivos conectados',
+                style: TextStyle(color: Colors.redAccent),
+              ),
             ],
           ),
-          const Text(
-            'No hay dispositivos conectados',
-            style: TextStyle(color: Colors.redAccent),
-          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 15),
+            child: Chart(
+              pressureV: '0.0',
+              o2V: '0.0',
+              co2V: '0.0',
+              heartrateV: '0.0',
+            ),
+          )
         ],
       );
     }

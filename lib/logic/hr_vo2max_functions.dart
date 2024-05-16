@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:scidart/numdart.dart';
 import 'package:scidart/scidart.dart';
 
-double flujoEspiraciones(List<double> pressVals, double timeEsp) {
+Future<double> flujoEspiraciones(List<double> pressVals, double timeEsp) async {
   double alpha = 0.2361;
   List<double> volEsp = [];
   List<double> timeList = [];
@@ -32,8 +32,8 @@ double flujoEspiraciones(List<double> pressVals, double timeEsp) {
   return volFlow;
 }
 
-double vo2Max(double co2Val, double temp, double o2Val, double volFlow,
-    double elapsedTime, double weight) {
+Future<double> vo2Max(double co2Val, double temp, double o2Val, double volFlow,
+    double elapsedTime, double weight) async {
   double fiN2 = 0.7808; //0.7904
 
   double volMinute = volFlow * 60 / elapsedTime;
@@ -46,7 +46,7 @@ double vo2Max(double co2Val, double temp, double o2Val, double volFlow,
   return vMax;
 }
 
-int heartRate(List<double> hrSignal) {
+Future<int> heartRate(List<double> hrSignal) async {
   var peaks = findPeaks(Array(hrSignal), threshold: 2.01);
   int beats = peaks[1].length();
   int bpm = (60 * beats / 5).round(); //5 es el valor del tiempo que ha pasado -

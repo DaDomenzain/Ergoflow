@@ -20,7 +20,7 @@ class NewMeasurement extends StatelessWidget {
         const GoBack(),
         const Bienvenida(),
         const SizedBox(
-          height: 30,
+          height: 4,
         ),
         ReceiveData(),
         const Comparar()
