@@ -30,3 +30,17 @@ double flujoEspiraciones(List<double> pressVals, double timeEsp) {
   volFlow = (volEsp.reduce(max));
   return volFlow;
 }
+
+double vo2Max(double co2Val, double temp, double o2Val, double volFlow,
+    double elapsedTime, double weight) {
+  double fiN2 = 0.7808; //0.7904
+
+  double volMinute = volFlow * 60 / elapsedTime;
+  co2Val = co2Val / 10000;
+  double viHaldane = (1 - co2Val / 100 - o2Val / 100) / fiN2;
+  double ve = volMinute * (273.15 / (273.15 + temp)) * ((760.0 - 25.2) / 760);
+  double vMax = ve * (((viHaldane / 100) * 0.209) - (o2Val / 100));
+  vMax = ((vMax * 100).abs()) / (weight / 2.2);
+
+  return vMax;
+}
