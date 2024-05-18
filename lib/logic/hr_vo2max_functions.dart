@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:scidart/numdart.dart';
 import 'package:scidart/scidart.dart';
 
-Future<double> flujoEspiraciones(List<double> pressVals, double timeEsp) async {
+Future<double> flujoEspiraciones(List<double> pressVals) async {
   double alpha = 0.2361;
   List<double> volEsp = [];
   List<double> timeList = [];
@@ -18,7 +18,6 @@ Future<double> flujoEspiraciones(List<double> pressVals, double timeEsp) async {
 
   pressVals = pressVals.map((e) => e * alpha).toList();
   lenPress = pressVals.length;
-  timeList.add(timeEsp);
 
   if (lenPress == 1) {
     pressVals.add(pressVals[0]);

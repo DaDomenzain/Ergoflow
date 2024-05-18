@@ -27,7 +27,9 @@ class _ChartState extends State<Chart> {
   List<double> _pressChartData = [];
   List<double> _timeEspiracion = [];
   bool isFlowCalculated = false;
-  int timeCounter = 0;
+  bool timeCounter = false;
+  bool firstEsp = true;
+  late Future<double> volFlow;
   //late ChartSeriesController _chartSeriesController;
   late ZoomPanBehavior _zoomPanBehavior;
   late Timer timer;
@@ -91,11 +93,26 @@ class _ChartState extends State<Chart> {
   void updateDataSource(Timer timer) {
     _chartData.add(Data(time = time + 0.1, double.parse(widget.pressureV)));
     if (_chartData.last.voltage > 0.2) {
-      _pressChartData.add(_chartData.last.voltage);
-    } else {
-      if (!isFlowCalculated) {
-        //flujoEspiraciones(_pressChartData, _timeEspiracion[0]);
+      if (!timeCounter && firstEsp) {
+        timeCounter = true;
+        firstEsp = false;
+        _timeEspiracion.add(_chartData.last.time);
+        _pressChartData.add(_chartData.last.voltage);
+      } else if (!timeCounter) {
+        timeCounter = true;
+        _timeEspiracion.add(_chartData.last.time);
+        //Calcular elapsed time
+        //vo2Max(co2Val, temp, o2Val, volFlow, elapsedTime, weight)
+        _pressChartData = [];
+        _timeEspiracion.removeAt(0);
+        _pressChartData.add(_chartData.last.voltage);
+      } else {
+        _pressChartData.add(_chartData.last.voltage);
       }
+    } else if (!isFlowCalculated) {
+      volFlow = flujoEspiraciones(_pressChartData);
+      isFlowCalculated = true;
+      timeCounter = false;
     }
 
     //_pressChartData
