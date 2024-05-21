@@ -111,6 +111,7 @@ class _ReceiveDataState extends State<ReceiveData> {
                         o2V: '0.0',
                         co2V: '0.0',
                         heartrateV: '0.0',
+                        tempV: '0.0',
                       ),
                     )
                   ],
@@ -119,9 +120,10 @@ class _ReceiveDataState extends State<ReceiveData> {
                 decodedBytes = utf8Decoder.convert(encodedBytes!);
                 List<String> receivedData = decodedBytes.split(',');
                 String pressureV = receivedData[0];
-                String o2V = receivedData[1];
-                String co2V = receivedData[2];
-                String heartRateV = receivedData[3];
+                String co2V = receivedData[1];
+                String temp = receivedData[2];
+                String o2V = receivedData[3];
+                String heartRateV = receivedData[4];
 
                 //String newdecoded = decodedBytes;
                 connectedButtons = Column(
@@ -147,8 +149,9 @@ class _ReceiveDataState extends State<ReceiveData> {
                       padding: const EdgeInsets.only(left: 5, right: 15),
                       child: Chart(
                         pressureV: pressureV,
-                        o2V: o2V,
                         co2V: co2V,
+                        tempV: temp,
+                        o2V: o2V,
                         heartrateV: heartRateV,
                       ),
                     )
@@ -185,6 +188,7 @@ class _ReceiveDataState extends State<ReceiveData> {
               o2V: '0.0',
               co2V: '0.0',
               heartrateV: '0.0',
+              tempV: '0.0',
             ),
           )
         ],

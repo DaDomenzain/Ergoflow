@@ -1,18 +1,13 @@
 //variables de mas de una palabra no van con guion bajo, van con la primera palabra en minusculas, pegada a la segunda, pero esta inicia con mayuscula: ejemplo: displayMessagetoUser
 //@Domenzain con OCT
 
-import 'package:flutter/material.dart';
 import 'package:scidart/numdart.dart';
 import 'package:scidart/scidart.dart';
 
-Future<double> flujoEspiraciones(List<double> pressVals) async {
+double flujoEspiraciones(List<double> pressVals) {
   double alpha = 0.2361;
   List<double> volEsp = [];
-  List<double> timeList = [];
   double volFlow;
-  List<double> promO2 = [];
-  List<double> promCo2 = [];
-  List<double> promTemp = [];
 
   int lenPress = 0;
 
@@ -31,8 +26,8 @@ Future<double> flujoEspiraciones(List<double> pressVals) async {
   return volFlow;
 }
 
-Future<double> vo2Max(double co2Val, double temp, double o2Val, double volFlow,
-    double elapsedTime, double weight) async {
+double vo2Max(double co2Val, double temp, double o2Val, double volFlow,
+    double elapsedTime, int weight) {
   double fiN2 = 0.7808; //0.7904
 
   double volMinute = volFlow * 60 / elapsedTime;
@@ -45,7 +40,7 @@ Future<double> vo2Max(double co2Val, double temp, double o2Val, double volFlow,
   return vMax;
 }
 
-Future<int> heartRate(List<double> hrSignal) async {
+int heartRate(List<double> hrSignal) {
   var peaks = findPeaks(Array(hrSignal), threshold: 2.01);
   int beats = peaks[1].length();
   int bpm = (60 * beats / 5).round(); //5 es el valor del tiempo que ha pasado -

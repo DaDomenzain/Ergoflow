@@ -14,7 +14,11 @@ class AvatarSelect extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
         child: SingleChildScrollView(
           child: Column(
-            children: <Widget>[const Logo(), const GoBack(), BuildAvatar()],
+            children: <Widget>[
+              const Logo(),
+              const GoBack(),
+              BuildAvatarGridView()
+            ],
           ),
         ),
       )),

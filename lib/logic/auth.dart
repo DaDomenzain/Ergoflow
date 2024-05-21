@@ -5,6 +5,7 @@ import 'package:ergo_flow/screens/profile_edit/profile_edit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationRepository extends GetxController {
   static AuthenticationRepository get instance => Get.find();
@@ -61,7 +62,37 @@ class AuthenticationRepository extends GetxController {
     } catch (_) {}
   }
 
-  Future<UserCredential?> signInWithGoogle() async {}
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+      final user = FBUser(
+          id: '1234',
+          email: googleUser!.email,
+          name: 'Usuario',
+          age: 1,
+          sex: 'Masculino',
+          height: 1,
+          weight: 1,
+          avatar: 'assets/images/avatar_h_1.jpg');
+      UserRepository().createUser(user);
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        Get.snackbar('Error', 'Correo ya está en uso');
+      } else if (e.code == 'invalid-email') {
+        Get.snackbar('Error', 'Correo inválido');
+      } else if (e.code == 'weak-password') {
+        Get.snackbar('Error', 'Contraseña muy débil');
+      } else {
+        Get.snackbar('Error', 'Algo salió mal. Intenta de nuevo.');
+      }
+    } catch (_) {}
+    return null;
+  }
 
   Future<void> logout() async => await _auth.signOut();
 }

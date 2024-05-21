@@ -3,159 +3,62 @@ import 'package:ergo_flow/logic/profile_controller.dart';
 import 'package:ergo_flow/logic/user.dart';
 import 'package:ergo_flow/providers/user_info.dart';
 import 'package:ergo_flow/screens/home/home.dart';
+import 'package:ergo_flow/screens/profile_edit/widgets/avatar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class BuildAvatar extends StatefulWidget {
-  BuildAvatar({super.key});
+class BuildAvatarGridView extends StatefulWidget {
+  BuildAvatarGridView({super.key});
   String selectedAvatar = '';
 
   @override
-  State<BuildAvatar> createState() => _BuildAvatarState();
+  State<BuildAvatarGridView> createState() => _BuildAvatarState();
 }
 
-class _BuildAvatarState extends State<BuildAvatar> {
-  Color border1 = ColorPalette.blanco;
-  Color border2 = ColorPalette.blanco;
-  Color border3 = ColorPalette.blanco;
-  Color border4 = ColorPalette.blanco;
-  Color border5 = ColorPalette.blanco;
+class _BuildAvatarState extends State<BuildAvatarGridView> {
+  List<Map<String, dynamic>> items = <Map<String, dynamic>>[
+    <String, dynamic>{'path': 'assets/images/1.jpg'},
+    <String, dynamic>{'path': 'assets/images/2.jpg'},
+    <String, dynamic>{'path': 'assets/images/3.jpg'},
+    <String, dynamic>{'path': 'assets/images/4.jpg'},
+    <String, dynamic>{'path': 'assets/images/5.jpg'},
+    <String, dynamic>{'path': 'assets/images/6.jpg'},
+    <String, dynamic>{'path': 'assets/images/7.jpg'},
+    <String, dynamic>{'path': 'assets/images/8.jpg'},
+    <String, dynamic>{'path': 'assets/images/9.jpg'},
+    <String, dynamic>{'path': 'assets/images/10.jpg'},
+    <String, dynamic>{'path': 'assets/images/11.jpg'},
+    <String, dynamic>{'path': 'assets/images/12.jpg'},
+    <String, dynamic>{'path': 'assets/images/13.jpg'},
+    <String, dynamic>{'path': 'assets/images/14.jpg'},
+  ];
 
-  Row buildAvatarSelector(BuildContext context, String sex) {
-    final userInfo = Provider.of<MyUserInfo>(context);
-    Row avatarRow;
+  int optionSelected = 1;
+  void checkOption(int index) {
+    setState(() {
+      optionSelected = index;
+      widget.selectedAvatar = 'assets/images/$optionSelected.jpg';
+      print(widget.selectedAvatar);
+    });
+  }
 
-    if (sex == 'Masculino') {
-      avatarRow = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border1, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                userInfo.avatar = 'assets/images/avatar_h_1.jpg';
-                setState(() {
-                  border1 = ColorPalette.azul;
-                  border2 = ColorPalette.blanco;
-                  border3 = ColorPalette.blanco;
-                  border4 = ColorPalette.blanco;
-                  border5 = ColorPalette.blanco;
-                  widget.selectedAvatar = 'assets/images/avatar_h_1.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_h_1.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border2, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                userInfo.avatar = 'assets/images/avatar_h_2.jpg';
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.azul;
-                  border3 = ColorPalette.blanco;
-                  border4 = ColorPalette.blanco;
-                  border5 = ColorPalette.blanco;
-                  widget.selectedAvatar = 'assets/images/avatar_h_2.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_h_2.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border3, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                userInfo.avatar = 'assets/images/avatar_h_3.jpg';
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.blanco;
-                  border3 = ColorPalette.azul;
-                  border4 = ColorPalette.blanco;
-                  border5 = ColorPalette.blanco;
-                  widget.selectedAvatar = 'assets/images/avatar_h_3.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_h_3.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-        ],
-      );
-    } else {
-      avatarRow = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border4, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                userInfo.avatar = 'assets/images/avatar_m_1.jpg';
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.blanco;
-                  border3 = ColorPalette.blanco;
-                  border4 = ColorPalette.azul;
-                  border5 = ColorPalette.blanco;
-                  widget.selectedAvatar = 'assets/images/avatar_m_1.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_m_1.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-          Container(
-            decoration:
-                BoxDecoration(border: Border.all(color: border5, width: 2)),
-            child: GestureDetector(
-              onTap: () {
-                userInfo.avatar = 'assets/images/avatar_m_2.jpg';
-                setState(() {
-                  border1 = ColorPalette.blanco;
-                  border2 = ColorPalette.blanco;
-                  border3 = ColorPalette.blanco;
-                  border4 = ColorPalette.blanco;
-                  border5 = ColorPalette.azul;
-                  widget.selectedAvatar = 'assets/images/avatar_m_2.jpg';
-                });
-              }, // Image tapped
-              child: Image.asset(
-                'assets/images/avatar_m_2.jpg',
-                fit: BoxFit.cover, // Fixes border issues
-                width: 100.0,
-                height: 100.0,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-    return avatarRow;
+  GridView buildGridView() {
+    return GridView.count(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      crossAxisCount: 3,
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+      children: [
+        for (var i = 0; i < items.length; i++)
+          AvatarView(
+              path: items[i]['path'] as String,
+              onTap: () => checkOption(i + 1),
+              selected: i + 1 == optionSelected)
+      ],
+    );
   }
 
   @override
@@ -175,8 +78,7 @@ class _BuildAvatarState extends State<BuildAvatar> {
               ),
               const Text('Selecciona un avatar:',
                   style: TextStyle(fontSize: 15)),
-              buildAvatarSelector(context, 'Masculino'),
-              buildAvatarSelector(context, 'Femenino'),
+              buildGridView(),
               const SizedBox(
                 height: 10,
               ),
@@ -193,6 +95,7 @@ class _BuildAvatarState extends State<BuildAvatar> {
                   style: TextStyle(color: ColorPalette.blanco, fontSize: 17),
                 ),
                 onPressed: () async {
+                  //print(widget.selectedAvatar);
                   final newUserData = FBUser(
                       id: userData.id,
                       email: userData.email,
