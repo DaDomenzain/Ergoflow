@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MyUserInfo with ChangeNotifier {
+  late String? id;
   late int _height;
   late int _weight;
   late int _age;
   late String _sex;
   String _name = 'Usuario';
   String _avatar = 'assets/images/avatar_h_1.jpg';
-  late String? _email;
+  late String? email;
 
   int get height {
     return _height;
@@ -61,13 +62,5 @@ class MyUserInfo with ChangeNotifier {
   set sex(String value) {
     _sex = value;
     notifyListeners();
-  }
-
-  String? get email {
-    return _email;
-  }
-
-  set email(String? value) {
-    _email = value;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ergo_flow/config/color_palette.dart';
 import 'package:ergo_flow/firebase_options.dart';
 import 'package:ergo_flow/logic/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => MyUserInfo()),
         ],
         child: GetMaterialApp(
+            theme: ThemeData(scaffoldBackgroundColor: ColorPalette.blanco),
             debugShowCheckedModeBanner: false,
             home: Center(child: CircularProgressIndicator())));
   }

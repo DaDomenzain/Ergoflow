@@ -14,17 +14,19 @@ class NewMeasurement extends StatelessWidget {
         child: Scaffold(
             body: Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      child:
-          Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        const Logo(),
-        const GoBack(),
-        const Bienvenida(),
-        const SizedBox(
-          height: 4,
-        ),
-        ReceiveData(),
-        const Comparar()
-      ]),
+      child: SingleChildScrollView(
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          const Logo(),
+          const GoBack(),
+          const Bienvenida(),
+          const SizedBox(
+            height: 4,
+          ),
+          ReceiveData(),
+          const Comparar()
+        ]),
+      ),
     )));
   }
 }

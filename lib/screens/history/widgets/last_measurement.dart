@@ -10,13 +10,13 @@ class LastMeasurement extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         color: ColorPalette.blanco,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         boxShadow: [
           BoxShadow(
             color: ColorPalette.gris2,
             spreadRadius: 0.5,
             blurRadius: 3,
-            offset: Offset(1, 1), // changes position of shadow
+            offset: const Offset(1, 1), // changes position of shadow
           ),
         ],
       ),

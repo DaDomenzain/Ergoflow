@@ -69,17 +69,22 @@ class AuthenticationRepository extends GetxController {
           await googleUser?.authentication;
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
-      final user = FBUser(
-          id: '1234',
-          email: googleUser!.email,
-          name: 'Usuario',
-          age: 1,
-          sex: 'Masculino',
-          height: 1,
-          weight: 1,
-          avatar: 'assets/images/avatar_h_1.jpg');
-      UserRepository().createUser(user);
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+
+      var result = await FirebaseAuth.instance.signInWithCredential(credential);
+      if (result.additionalUserInfo!.isNewUser) {
+        final user = FBUser(
+            id: '1234',
+            email: googleUser!.email,
+            name: 'Usuario',
+            age: 1,
+            sex: 'Masculino',
+            height: 1,
+            weight: 1,
+            avatar: 'assets/images/avatar_h_1.jpg');
+        UserRepository().createUser(user);
+      } else {
+        return result;
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         Get.snackbar('Error', 'Correo ya está en uso');

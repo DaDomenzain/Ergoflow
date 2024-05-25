@@ -150,6 +150,7 @@ class _ProfileInputsState extends State<ProfileInputs> {
                         height: int.parse(heightController.text),
                         weight: int.parse(weightController.text),
                         avatar: userData.avatar);
+                    userInfo.id = userData.id;
                     userInfo.name = nameController.text;
                     userInfo.avatar = userData.avatar;
                     userInfo.age = int.parse(ageController.text);

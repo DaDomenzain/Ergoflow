@@ -41,8 +41,18 @@ double vo2Max(double co2Val, double temp, double o2Val, double volFlow,
 }
 
 int heartRate(List<double> hrSignal) {
-  var peaks = findPeaks(Array(hrSignal), threshold: 2.01);
-  int beats = peaks[1].length();
+  //print(hrSignal);
+  var peaks = findPeaks(Array(hrSignal), threshold: 1);
+  //print(peaks);
+  Array newPeaks = peaks[1];
+  //print(newPeaks);
+  for (var i = 0; i < newPeaks.length - 1; i++) {
+    if (newPeaks[i] == newPeaks[i + 1]) {
+      newPeaks.removeAt(i);
+    }
+  }
+  //print(newPeaks);
+  int beats = newPeaks.length;
   int bpm = (60 * beats / 5).round(); //5 es el valor del tiempo que ha pasado -
   //este valor depende de como pongamos el código en chart.dart
   return bpm;

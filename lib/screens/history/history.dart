@@ -19,7 +19,7 @@ class History extends StatelessWidget {
               Logo(),
               GoBack(),
               LastMeasurement(),
-              const SizedBox(
+              SizedBox(
                 height: 20,
               ),
               MeasurementHistory()
