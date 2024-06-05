@@ -26,18 +26,20 @@ double flujoEspiraciones(List<double> pressVals) {
   return volFlow;
 }
 
-double vo2Max(double co2Val, double temp, double o2Val, double volFlow,
-    double elapsedTime, int weight) {
+(double, double, double, double) vo2Max(double co2Val, double temp,
+    double o2Val, double volFlow, double elapsedTime, int weight) {
   double fiN2 = 0.7808; //0.7904
 
   double volMinute = volFlow * 60 / elapsedTime;
-  co2Val = co2Val / 10000;
+  co2Val = co2Val / 10000; //porcentaje de co2
   double viHaldane = (1 - co2Val / 100 - o2Val / 100) / fiN2;
   double ve = volMinute * (273.15 / (273.15 + temp)) * ((760.0 - 25.2) / 760);
-  double vMax = ve * (((viHaldane / 100) * 0.209) - (o2Val / 100));
-  vMax = ((vMax * 100).abs()) / (weight / 2.2);
+  double vMax = ve * ((viHaldane * 0.209) - (o2Val / 100));
+  double coMax = ve * ((co2Val / 100) - (viHaldane * 0.0003));
+  vMax = ((vMax * 1000).abs()) / (weight);
+  coMax = ((coMax * 1000).abs()) / (weight);
 
-  return vMax;
+  return (vMax, coMax, ve, volFlow);
 }
 
 int heartRate(List<double> hrSignal) {

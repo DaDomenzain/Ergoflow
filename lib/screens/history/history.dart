@@ -1,6 +1,5 @@
 import 'package:ergo_flow/screens/global_widgets/go_back.dart';
 import 'package:ergo_flow/screens/global_widgets/logo.dart';
-import 'package:ergo_flow/screens/history/widgets/last_measurement.dart';
 import 'package:ergo_flow/screens/history/widgets/measurement_history.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,6 @@ class History extends StatelessWidget {
             children: <Widget>[
               Logo(),
               GoBack(),
-              LastMeasurement(),
               SizedBox(
                 height: 20,
               ),

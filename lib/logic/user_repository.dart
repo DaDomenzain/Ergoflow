@@ -23,6 +23,17 @@ class UserRepository extends GetxController {
     return userData;
   }
 
+  Future<List<Measurement>> getMeasurements(String? id) async {
+    List<Measurement> measurements = [];
+    final snapshot =
+        await _db.collection('users').doc(id).collection('records').get();
+    for (var i = 0; i < snapshot.docs.length; i++) {
+      measurements.add(Measurement.fromSnapshot(snapshot.docs[i]));
+    }
+    measurements.sort((a, b) => b.date.compareTo(a.date));
+    return measurements;
+  }
+
   Future<void> updateUserRecord(FBUser user) async {
     await _db.collection('users').doc(user.id).update(user.toJson());
   }

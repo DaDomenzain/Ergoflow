@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ergo_flow/config/color_palette.dart';
 import 'package:ergo_flow/providers/ble_state.dart';
+import 'package:ergo_flow/providers/measurement_state.dart';
 import 'package:ergo_flow/screens/new_measurement/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -19,6 +20,7 @@ class _ReceiveDataState extends State<ReceiveData> {
   ElevatedButton startReceivingData(BuildContext context,
       {BluetoothCharacteristic? characteristic}) {
     final bleState = Provider.of<BleState>(context);
+    final measurementState = Provider.of<MeasurementState>(context);
     ElevatedButton button =
         const ElevatedButton(onPressed: null, child: Text('Comenzar medición'));
     if (characteristic != null) {
@@ -29,6 +31,7 @@ class _ReceiveDataState extends State<ReceiveData> {
             child: Text('Comenzar medición',
                 style: TextStyle(color: ColorPalette.blanco)),
             onPressed: () async {
+              measurementState.rest = true;
               characteristic.lastValueStream.listen((value) {
                 if (mounted) {
                   setState(() {
@@ -142,7 +145,7 @@ class _ReceiveDataState extends State<ReceiveData> {
                             ],
                           ),
                         ),
-                        Text('Value: $pressureV'),
+                        Text('Value: $heartRateV'),
                       ],
                     ),
                     Padding(

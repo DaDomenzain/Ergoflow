@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ergo_flow/config/color_palette.dart';
 import 'package:ergo_flow/firebase_options.dart';
 import 'package:ergo_flow/logic/auth.dart';
+import 'package:ergo_flow/providers/measurement_state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (context) => BleState()),
           ChangeNotifierProvider(create: (context) => MyUserInfo()),
+          ChangeNotifierProvider(create: (context) => MeasurementState()),
         ],
         child: GetMaterialApp(
             theme: ThemeData(scaffoldBackgroundColor: ColorPalette.blanco),

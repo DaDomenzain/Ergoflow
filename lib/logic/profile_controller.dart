@@ -28,12 +28,7 @@ class ProfileController extends GetxController {
     await _userRepo.createMeasurementRecord(id, measurement);
   }
 
-  getUserMeasurements() {
-    final email = _authRepo.firebaseUser.value?.email;
-    if (email != null) {
-      return _userRepo.getUserDetails(email);
-    } else {
-      Get.snackbar('Error', 'Login to continue');
-    }
+  Future<List<Measurement>> getUserMeasurements(String? id) async {
+    return _userRepo.getMeasurements(id);
   }
 }

@@ -4,7 +4,9 @@ import 'package:ergo_flow/logic/hr_vo2max_functions.dart';
 import 'package:ergo_flow/logic/measurement.dart';
 import 'package:ergo_flow/logic/profile_controller.dart';
 import 'package:ergo_flow/providers/ble_state.dart';
+import 'package:ergo_flow/providers/measurement_state.dart';
 import 'package:ergo_flow/providers/user_info.dart';
+import 'package:ergo_flow/screens/new_measurement/widgets/measurement_phase.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +37,10 @@ class _ChartState extends State<Chart> {
   //Lists that save all required data
   late List<Data> _chartData;
   late List<FinalData> _vo2Data;
+  late List<FinalData> _vco2Data;
   late List<FinalData> _hrData;
+  late List<FinalData> _veData;
+  late List<FinalData> _vtData;
 
   //Aux lists that save partial data (data that is further modified)
   List<double> _pressChartData = [];
@@ -52,6 +57,9 @@ class _ChartState extends State<Chart> {
   late double elapsedTime;
   late double volFlow;
   double vo2max = 0;
+  double vco2max = 0;
+  double ve = 0;
+  double vt = 0;
 
   //Heart Rate value
   int heartrate = 0;
@@ -64,10 +72,16 @@ class _ChartState extends State<Chart> {
   //Timer
   late Timer timer;
   double time = 0;
+  List<double> timestamps = [];
 
   //Controllers
   late ZoomPanBehavior _zoomPanBehavior;
-  final controller = Get.put(ProfileController());
+  final profileController = Get.put(ProfileController());
+
+  //Times
+  String restTime = '--:--';
+  String excerciseTime = '--:--';
+  String recoveryTime = '--:--';
 
   //Get the average value of a list of doubles
   double getAverageFromList(List<double> list) {
@@ -76,6 +90,54 @@ class _ChartState extends State<Chart> {
       sum = sum + list[i];
     }
     return sum / list.length;
+  }
+
+  void calculateTimes() {
+    final measurementState = Provider.of<MeasurementState>(context);
+    final bleState = Provider.of<BleState>(context);
+    if (measurementState.excercise) {
+      timestamps.add(time);
+      int minutes = (time ~/ 60);
+      int seconds = (time % 60).floor();
+      if (seconds < 10) {
+        restTime = '$minutes:0$seconds';
+      } else {
+        restTime = '$minutes:$seconds';
+      }
+      measurementState.excercise = false;
+    } else if (measurementState.recovery) {
+      timestamps.add(time);
+      int minutes = (time ~/ 60);
+      int seconds = (time % 60).floor();
+      if (seconds < 10) {
+        excerciseTime = '$minutes:0$seconds';
+      } else {
+        excerciseTime = '$minutes:$seconds';
+      }
+      measurementState.recovery = false;
+    } else if (measurementState.rest && !bleState.notifyState) {
+      print('AAAA');
+      timestamps.add(time);
+      int minutes = (time ~/ 60);
+      int seconds = (time % 60).floor();
+      if (seconds < 10) {
+        recoveryTime = '$minutes:0$seconds';
+      } else {
+        recoveryTime = '$minutes:$seconds';
+      }
+      measurementState.rest = false;
+    }
+  }
+
+  Row displayTimes() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Text(restTime, style: const TextStyle(fontSize: 20)),
+        Text(excerciseTime, style: const TextStyle(fontSize: 20)),
+        Text(recoveryTime, style: const TextStyle(fontSize: 20))
+      ],
+    );
   }
 
   @override
@@ -87,7 +149,10 @@ class _ChartState extends State<Chart> {
     //Initialize lists for final data
     _chartData = getChartData();
     _vo2Data = getFinalChartData();
+    _vco2Data = getFinalChartData();
     _hrData = getFinalChartData();
+    _veData = getFinalChartData();
+    _vtData = getFinalChartData();
 
     //Start timer (this timer calls updateDataSource every 100 ms)
     Timer.periodic(const Duration(milliseconds: 100), updateDataSource);
@@ -98,20 +163,24 @@ class _ChartState extends State<Chart> {
   Widget build(BuildContext context) {
     final bleState = Provider.of<BleState>(context);
     final userInfo = Provider.of<MyUserInfo>(context);
+    //final measurementState = Provider.of<MeasurementState>(context);
     if (bleState.notifyState) {
+      calculateTimes();
       return Column(
         children: [
+          MeasurementTimes(time: time),
+          displayTimes(),
           SfCartesianChart(
             title: const ChartTitle(text: 'VO2'),
             zoomPanBehavior: _zoomPanBehavior,
             primaryXAxis: const NumericAxis(
               title: AxisTitle(text: 'Tiempo (s)'),
-              maximum: 120,
+              maximum: 300,
               minimum: 0,
             ),
             primaryYAxis: const NumericAxis(
               title: AxisTitle(text: 'VO2max (ml/kg/min)'),
-              maximum: 40,
+              maximum: 60,
               minimum: 0,
             ),
             series: <CartesianSeries>[
@@ -139,22 +208,51 @@ class _ChartState extends State<Chart> {
         ],
       );
     } else {
+      calculateTimes();
       //If not receiving data, save data,
       //delete all previously saved data and set timer to 0
       if (_chartData.isNotEmpty) {
         Map<String, List> vo2 = {
           'value': _vo2Data.map((data) => data.value).toList(),
-          'time': _vo2Data.map((data) => data.time).toList()
+          'time': _vo2Data.map((data) => data.time).toList(),
         };
+
+        Map<String, List> vco2 = {
+          'value': _vco2Data.map((data) => data.value).toList(),
+          'time': _vco2Data.map((data) => data.time).toList(),
+        };
+
+        Map<String, List> ve = {
+          'value': _veData.map((data) => data.value).toList(),
+          'time': _veData.map((data) => data.time).toList()
+        };
+
+        Map<String, List> vt = {
+          'value': _vtData.map((data) => data.value).toList(),
+          'time': _vtData.map((data) => data.time).toList()
+        };
+
         Map<String, List> hr = {
           'value': _hrData.map((data) => data.value).toList(),
           'time': _hrData.map((data) => data.time).toList()
         };
-        Measurement measurement =
-            Measurement(vo2: vo2, hr: hr, date: FieldValue.serverTimestamp());
-        controller.createMeasurement(userInfo.id, measurement);
+
+        Measurement measurement = Measurement(
+            vo2: vo2,
+            vco2: vco2,
+            ve: ve,
+            vt: vt,
+            hr: hr,
+            date: Timestamp.now(),
+            timestamps: timestamps);
+        profileController.createMeasurement(userInfo.id, measurement);
       }
+
+      timestamps = [];
       _vo2Data = [];
+      _vco2Data = [];
+      _veData = [];
+      _vtData = [];
       _chartData = [];
       _hrData = [];
       if (mounted) {
@@ -165,17 +263,19 @@ class _ChartState extends State<Chart> {
       //Return an empty graph
       return Column(
         children: [
+          MeasurementTimes(time: time),
+          displayTimes(),
           SfCartesianChart(
             title: const ChartTitle(text: 'VO2'),
             zoomPanBehavior: _zoomPanBehavior,
             primaryXAxis: const NumericAxis(
               title: AxisTitle(text: 'Tiempo (s)'),
-              maximum: 120,
+              maximum: 300,
               minimum: 0,
             ),
             primaryYAxis: const NumericAxis(
               title: AxisTitle(text: 'VO2max (ml/kg/min)'),
-              maximum: 40,
+              maximum: 60,
               minimum: 0,
             ),
           ),
@@ -244,11 +344,14 @@ class _ChartState extends State<Chart> {
             _timeEspiracion.add(_chartData.last.time);
             //Calculate elapsed time
             elapsedTime = _timeEspiracion[1] - _timeEspiracion[0];
-            //Calculate vo2max
-            vo2max = vo2Max(co2prom, tempprom, o2prom, volFlow, elapsedTime,
-                userInfo.weight);
-            //Add vo2max result to list
+            //Calculate vo2, vco2, ve & vt
+            var (vo2max, vco2max, ve, vt) = vo2Max(co2prom, tempprom, o2prom,
+                volFlow, elapsedTime, userInfo.weight);
+            //Add results to list
             _vo2Data.add(FinalData(time, vo2max));
+            _vco2Data.add(FinalData(time, vco2max));
+            _veData.add(FinalData(time, ve));
+            _vtData.add(FinalData(time, vt));
             //Empty aux lists
             _pressChartData = [];
             o2values = [];

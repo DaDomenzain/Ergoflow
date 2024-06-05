@@ -1,7 +1,7 @@
 import 'package:ergo_flow/logic/user.dart';
 import 'package:ergo_flow/logic/user_repository.dart';
 import 'package:ergo_flow/screens/login/login.dart';
-import 'package:ergo_flow/screens/profile_edit/profile_edit.dart';
+import 'package:ergo_flow/screens/splash_screen/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:get/get.dart';
@@ -23,7 +23,7 @@ class AuthenticationRepository extends GetxController {
   _setInitialScreen(User? user) {
     user == null
         ? Get.offAll(() => const Login())
-        : Get.offAll(() => const ProfileEdit());
+        : Get.offAll(() => const SplashScreen());
   }
 
   Future<void> createUserWithEmailandPassword(
@@ -39,7 +39,7 @@ class AuthenticationRepository extends GetxController {
           sex: 'Masculino',
           height: 1,
           weight: 1,
-          avatar: 'assets/images/avatar_h_1.jpg');
+          avatar: 'assets/images/1.jpg');
       UserRepository().createUser(user);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -80,7 +80,7 @@ class AuthenticationRepository extends GetxController {
             sex: 'Masculino',
             height: 1,
             weight: 1,
-            avatar: 'assets/images/avatar_h_1.jpg');
+            avatar: 'assets/images/1.jpg');
         UserRepository().createUser(user);
       } else {
         return result;
